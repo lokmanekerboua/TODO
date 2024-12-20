@@ -62,12 +62,7 @@ class TodoListViewModel @Inject constructor(
             }
 //----------------------------Restore Task-------------------------------------------
             TasksListEvents.RestoreTask -> {
-                //restoreTask(recentlyDeletedTask)
-                viewModelScope.launch {
-                    useCases.addTaskUseCase(recentlyDeletedTask ?: return@launch)
-                    recentlyDeletedTask = null
-                }
-                getAllTasks(tasksState.tasksOrder)
+                restoreTask(recentlyDeletedTask)
             }
 //----------------------------Show Hide App Bar DropDown----------------------------
             TasksListEvents.ExpandTopAppBarDropdown -> {
@@ -125,8 +120,7 @@ class TodoListViewModel @Inject constructor(
                     action = SnackBarAction(
                         name = "Undo",
                         action = {
-                            onEvent(event = TasksListEvents.RestoreTask)
-                            //restoreTask(toDoTask)
+                            restoreTask(toDoTask)
                         }
                     )
                 )
@@ -157,13 +151,15 @@ class TodoListViewModel @Inject constructor(
         }
     }
 
-//    private fun restoreTask(task: ToDoTask?) {
-//        val job = viewModelScope.launch {
-//            useCases.addTaskUseCase(task ?: return@launch)
-//        }
-//        viewModelScope.launch {
-//            job.join()
-//            getAllTasks(tasksState.tasksOrder)
-//        }
-//    }
+    private fun restoreTask(task: ToDoTask?) {
+        viewModelScope.launch {
+            useCases.addTaskUseCase(
+                recentlyDeletedTask?.copy(
+                    version = recentlyDeletedTask?.version?.plus(1) ?: 0
+                )
+                    ?: return@launch
+            )
+            recentlyDeletedTask = null
+        }
+    }
 }

@@ -15,6 +15,7 @@ import java.time.LocalTime
 data class ToDoTask(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val title: String,
+    var version: Int = 0,
     val description: String,
     val priority: Priority,
     val date: LocalDate?,

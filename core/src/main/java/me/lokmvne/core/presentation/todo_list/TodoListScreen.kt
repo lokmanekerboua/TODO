@@ -104,7 +104,7 @@ fun TodoListScreen(navigateToTaskScreen: (Int) -> Unit) {
 //-----------------------------Tasks List----------------------------------------------
                 LazyColumn {
                     items(viewModel.tasksState.todoTasks) {
-                        key(it.id) {
+                        key("${it.id}${it.version}") {
                             SwipeToDoItem(
                                 todoTask = it,
                                 onClick = {
