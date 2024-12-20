@@ -1,46 +1,20 @@
 package me.lokmvne.core.repository
 
 import kotlinx.coroutines.flow.Flow
-import me.lokmvne.core.data.models.ToDoDao
-import me.lokmvne.core.data.models.ToDoTask
-import javax.inject.Inject
+import me.lokmvne.core.domain.model.ToDoTask
 
-class TodoRepository @Inject constructor(
-    private val todoDao: ToDoDao
-) {
-    fun getAllTasks(): Flow<List<ToDoTask>> {
-        return todoDao.getAllTasks()
-    }
+interface ToDoRepository {
+    fun getAllTasks(): Flow<List<ToDoTask>>
 
-    suspend fun addTask(toDoTask: ToDoTask) {
-        todoDao.addTask(toDoTask)
-    }
+    suspend fun addTask(toDoTask: ToDoTask)
 
-    fun getSelectedTask(taskId: Int): Flow<ToDoTask> {
-        return todoDao.getSelectedTask(taskId)
-    }
+    fun getSelectedTask(taskId: Int): Flow<ToDoTask>
 
-    suspend fun updateTask(toDoTask: ToDoTask) {
-        todoDao.updateTask(toDoTask)
-    }
+    suspend fun updateTask(toDoTask: ToDoTask)
 
-    suspend fun deleteTask(toDoTask: ToDoTask) {
-        todoDao.deleteTask(toDoTask)
-    }
+    suspend fun deleteTask(toDoTask: ToDoTask)
 
-    suspend fun deleteAllTasks() {
-        todoDao.deleteAllTasks()
-    }
+    suspend fun deleteAllTasks()
 
-    fun searchDatabase(searchQuery: String): Flow<List<ToDoTask>> {
-        return todoDao.searchDatabase(searchQuery)
-    }
-
-    fun sortByLowPriority(): Flow<List<ToDoTask>> {
-        return todoDao.sortByLowPriority()
-    }
-
-    fun sortByHighPriority(): Flow<List<ToDoTask>> {
-        return todoDao.sortByHighPriority()
-    }
+    fun searchDatabase(searchQuery: String): Flow<List<ToDoTask>>
 }

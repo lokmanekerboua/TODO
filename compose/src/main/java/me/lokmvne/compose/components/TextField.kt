@@ -19,8 +19,12 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ToDoTextField(
     txt: String,
-    label: String,
+    placeholder: String = "",
+    label: String = "",
+    modifier: Modifier = Modifier,
+    maxLines: Int = 1,
     readOnly: Boolean = false,
+    roundedCorner: Int = 10,
     trailingIcon: @Composable () -> Unit = {},
     onValueChange: (String) -> Unit,
     onDone: () -> Unit = {}
@@ -28,10 +32,12 @@ fun ToDoTextField(
     OutlinedTextField(
         value = txt,
         onValueChange = { onValueChange(it) },
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth(),
         enabled = true,
         readOnly = readOnly,
         textStyle = MaterialTheme.typography.bodyLarge,
+        placeholder = { Text(placeholder) },
         label = { Text(label) },
         trailingIcon = { trailingIcon() },
         isError = false,
@@ -43,11 +49,10 @@ fun ToDoTextField(
         keyboardActions = KeyboardActions(
             onDone = { onDone() }
         ),
-        singleLine = true,
-        maxLines = 1,
+        maxLines = maxLines,
         minLines = 1,
         interactionSource = null,
-        shape = RoundedCornerShape(10.dp),
+        shape = RoundedCornerShape(roundedCorner.dp),
         colors = OutlinedTextFieldDefaults.colors(
             focusedTextColor = MaterialTheme.colorScheme.primary,
             unfocusedTextColor = MaterialTheme.colorScheme.primary,

@@ -12,3 +12,12 @@ object NavToDoListScreen
 data class NavToDoTaskScreen(
     val taskId: Int = -1,
 )
+
+enum class ToDoActions {
+    ADD,
+    UPDATE,
+    DELETE,
+    DELETE_ALL,
+    UNDO,
+    NO_ACTION
+}
