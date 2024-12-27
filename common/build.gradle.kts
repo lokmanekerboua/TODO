@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.google.dagger.hilt)
+    alias(libs.plugins.google.devtools.ksp)
     alias(libs.plugins.kotlinx.serialization)
 }
 
@@ -64,6 +66,12 @@ dependencies {
 
     //dataStore
     implementation(libs.androidx.datastore)
+
+    //Dagger - Hilt
+    implementation(libs.google.dagger.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.google.dagger.hilt.android.compiler)
+    ksp(libs.androidx.dagger.hilt.compiler)
 
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)

@@ -13,9 +13,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import me.lokmvne.compose.ui.theme.ToDoTheme
-import me.lokmvne.core.domain.utils.OrderType
-import me.lokmvne.core.domain.utils.ToDoOrder
+import me.lokmvne.compose.ui.theme.ToDoAppTheme
+import me.lokmvne.common.utils.OrderType
+import me.lokmvne.common.utils.ToDoOrder
 
 @Composable
 fun OrderingSection(
@@ -103,7 +103,7 @@ fun ToDoRadioButton(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun OrderingSectionPreview() {
-    ToDoTheme {
+    ToDoAppTheme {
         OrderingSection(
             modifier = Modifier.height(100.dp),
             taskOrder = ToDoOrder.Priority(OrderType.Descending),

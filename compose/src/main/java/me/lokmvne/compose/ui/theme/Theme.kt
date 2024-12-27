@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import me.lokmvne.common.utils.ObserveAsEvents
+import me.lokmvne.common.utils.ToDoTheme
 
 @Immutable
 data class ExtendedColorScheme(
@@ -254,7 +256,7 @@ data class ColorFamily(
 )
 
 @Composable
-fun ToDoTheme(
+fun ToDoAppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,

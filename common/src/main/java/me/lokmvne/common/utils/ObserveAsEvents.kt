@@ -1,4 +1,4 @@
-package me.lokmvne.core.utils
+package me.lokmvne.common.utils
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

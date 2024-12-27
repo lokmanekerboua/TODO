@@ -17,6 +17,14 @@ class ToDoRepositoryImpl(private val dao: ToDoDao) : ToDoRepository {
         return dao.getSelectedTask(taskId)
     }
 
+    override fun getHighPriorityTasks(): Flow<List<ToDoTask>> {
+        return dao.getHighPriorityTasks()
+    }
+
+    override fun getNearTasks(startDate: Long, endDate: Long): Flow<List<ToDoTask>> {
+        return dao.getNearTasks(startDate, endDate)
+    }
+
     override suspend fun updateTask(toDoTask: ToDoTask) {
         return dao.updateTask(toDoTask)
     }

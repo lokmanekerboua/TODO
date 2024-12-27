@@ -13,6 +13,8 @@ import me.lokmvne.core.domain.use_cases.AddTaskUseCase
 import me.lokmvne.core.domain.use_cases.DeleteAllTasksUseCase
 import me.lokmvne.core.domain.use_cases.DeleteTaskUseCase
 import me.lokmvne.core.domain.use_cases.GetAllTasksUseCase
+import me.lokmvne.core.domain.use_cases.GetHighPriorityTasks
+import me.lokmvne.core.domain.use_cases.GetNearTasks
 import me.lokmvne.core.domain.use_cases.GetSelectedTaskUseCase
 import me.lokmvne.core.domain.use_cases.SearchDatabaseUseCase
 import me.lokmvne.core.domain.use_cases.ToDoUseCases
@@ -57,7 +59,9 @@ object ToDoModules {
             getAllTasksUseCase = GetAllTasksUseCase(repository),
             getSelectedTaskUseCase = GetSelectedTaskUseCase(repository),
             searchDatabaseUseCase = SearchDatabaseUseCase(repository),
-            updateTaskUseCase = UpdateTaskUseCase(repository)
+            updateTaskUseCase = UpdateTaskUseCase(repository),
+            getHighPriorityTasks = GetHighPriorityTasks(repository),
+            getNearTasks = GetNearTasks(repository),
         )
     }
 }

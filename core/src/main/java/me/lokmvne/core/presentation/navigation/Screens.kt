@@ -1,4 +1,4 @@
-package me.lokmvne.core.presentation
+package me.lokmvne.core.presentation.navigation
 
 import androidx.navigation.NavHostController
 import me.lokmvne.common.navigation.NavToDoListScreen

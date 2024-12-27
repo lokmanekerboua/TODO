@@ -2,6 +2,10 @@ package me.lokmvne.compose.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+val colorCard1 = Color(0xFFf5f378)
+val colorCard2 = Color(0xFFdcc2ff)
+val colorCard3 = Color(0xFFed724c)
+val colorCard4 = Color(0xFF2e2e2e)
 
 val primaryLight = Color(0xFF2C6A45)
 val onPrimaryLight = Color(0xFFFFFFFF)

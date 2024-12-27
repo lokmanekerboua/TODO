@@ -10,6 +10,10 @@ interface ToDoRepository {
 
     fun getSelectedTask(taskId: Int): Flow<ToDoTask>
 
+    fun getHighPriorityTasks(): Flow<List<ToDoTask>>
+
+    fun getNearTasks(startDate: Long, endDate: Long): Flow<List<ToDoTask>>
+
     suspend fun updateTask(toDoTask: ToDoTask)
 
     suspend fun deleteTask(toDoTask: ToDoTask)

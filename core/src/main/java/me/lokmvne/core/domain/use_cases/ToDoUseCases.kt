@@ -7,5 +7,7 @@ data class ToDoUseCases(
     val getAllTasksUseCase: GetAllTasksUseCase,
     val getSelectedTaskUseCase: GetSelectedTaskUseCase,
     val searchDatabaseUseCase: SearchDatabaseUseCase,
-    val updateTaskUseCase: UpdateTaskUseCase
+    val updateTaskUseCase: UpdateTaskUseCase,
+    val getHighPriorityTasks: GetHighPriorityTasks,
+    val getNearTasks: GetNearTasks
 )

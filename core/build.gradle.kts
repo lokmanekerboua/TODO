@@ -106,6 +106,9 @@ dependencies {
     implementation(libs.androidx.room.paging)
     ksp(libs.androidx.room.compiler)
 
+    //dataStore
+    implementation(libs.androidx.datastore)
+
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)
 }

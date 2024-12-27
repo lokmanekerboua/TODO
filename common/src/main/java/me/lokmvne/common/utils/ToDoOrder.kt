@@ -1,6 +1,7 @@
-package me.lokmvne.core.domain.utils
+package me.lokmvne.common.utils
 
 sealed class ToDoOrder(val orderType: OrderType) {
+
     class Title(orderType: OrderType) : ToDoOrder(orderType)
     class Priority(orderType: OrderType) : ToDoOrder(orderType)
     class TriggerTime(orderType: OrderType) : ToDoOrder(orderType)

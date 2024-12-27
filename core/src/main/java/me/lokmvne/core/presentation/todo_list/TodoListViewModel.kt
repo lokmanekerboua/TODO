@@ -1,6 +1,5 @@
 package me.lokmvne.core.presentation.todo_list
 
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -9,10 +8,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import me.lokmvne.common.data_store.ToDoPreferences
 import me.lokmvne.core.domain.model.ToDoTask
 import me.lokmvne.core.domain.use_cases.ToDoUseCases
-import me.lokmvne.core.domain.utils.OrderType
-import me.lokmvne.core.domain.utils.ToDoOrder
 import me.lokmvne.core.utils.SnackBarAction
 import me.lokmvne.core.utils.SnackBarController
 import me.lokmvne.core.utils.SnackBarEvent
@@ -21,12 +19,11 @@ import javax.inject.Inject
 @HiltViewModel
 class TodoListViewModel @Inject constructor(
     private val useCases: ToDoUseCases,
+    private val toDoPreferences: ToDoPreferences
 ) : ViewModel() {
     private var recentlyDeletedTask: ToDoTask? = null
-    val snackBarHostState = SnackbarHostState()
 
     var searchQuery by mutableStateOf("")
-
 
     var tasksState by mutableStateOf(TasksState())
         private set
@@ -34,7 +31,8 @@ class TodoListViewModel @Inject constructor(
     private var getTasksJob: Job? = null
 
     init {
-        getAllTasks(ToDoOrder.TriggerTime(OrderType.Descending))
+        getHighPriorityTasks()
+        getAllTasks()
     }
 
     fun onEvent(event: TasksListEvents) {
@@ -46,7 +44,10 @@ class TodoListViewModel @Inject constructor(
                 ) {
                     return
                 }
-                getAllTasks(event.taskOrder)
+                viewModelScope.launch {
+                    toDoPreferences.setToDoOrderType(event.taskOrder)
+                    getAllTasks()
+                }
             }
 //--------------------------------Search Tasks Event----------------------------
             is TasksListEvents.SearchTask -> {
@@ -56,15 +57,20 @@ class TodoListViewModel @Inject constructor(
             is TasksListEvents.DeleteTask -> {
                 deleteTask(event.toDoTask)
             }
-//--------------------------------Delete all Tasks Event----------------------------
-            TasksListEvents.DeleteAllTasks -> {
-                deleteAllTasks()
-            }
 //----------------------------Restore Task-------------------------------------------
             TasksListEvents.RestoreTask -> {
-                restoreTask(recentlyDeletedTask)
+                restoreTask()
             }
-//----------------------------Show Hide App Bar DropDown----------------------------
+
+            TasksListEvents.DeleteAllTasks -> {
+                viewModelScope.launch {
+                    tasksState = tasksState.copy(
+                        isDeleteDialogVisible = false
+                    )
+                    useCases.deleteAllTasksUseCase()
+                }
+            }
+
             TasksListEvents.ExpandTopAppBarDropdown -> {
                 tasksState = tasksState.copy(
                     isTopAppBarDropdownExpanded = true
@@ -76,37 +82,58 @@ class TodoListViewModel @Inject constructor(
                     isTopAppBarDropdownExpanded = false
                 )
             }
-//--------------------------------Show Hide Delete Dialog----------------------------
-            TasksListEvents.ShowDeleteDialog -> {
-                tasksState = tasksState.copy(
-                    isDeleteDialogVisible = true
-                )
-            }
 
             TasksListEvents.HideDeleteDialog -> {
                 tasksState = tasksState.copy(
                     isDeleteDialogVisible = false
                 )
             }
-//--------------------------------Show Hide Ordering Section----------------------------
+
+
+            TasksListEvents.ShowDeleteDialog -> {
+                tasksState = tasksState.copy(
+                    isDeleteDialogVisible = true
+                )
+            }
+
             TasksListEvents.ShowOrderingSection -> {
                 tasksState = tasksState.copy(
+                    isSearchBoxVisible = false,
                     isOrderingSectionVisible = !tasksState.isOrderingSectionVisible
+                )
+            }
+
+            TasksListEvents.ShowSearchBox -> {
+                tasksState = tasksState.copy(
+                    isOrderingSectionVisible = false,
+                    isSearchBoxVisible = !tasksState.isSearchBoxVisible
                 )
             }
         }
     }
 
-    private fun getAllTasks(taskOrder: ToDoOrder) {
-        //getTasksJob?.cancel()
+    private fun getAllTasks(/*taskOrder: ToDoOrder*/) {
+        getTasksJob?.cancel()
         getTasksJob = viewModelScope.launch {
-            useCases.getAllTasksUseCase(taskOrder)
-                .collect { tasks ->
-                    tasksState = tasksState.copy(
-                        todoTasks = tasks,
-                        tasksOrder = taskOrder
-                    )
-                }
+            toDoPreferences.readToDoOrderType().collect {
+                useCases.getAllTasksUseCase(it)
+                    .collect { tasks ->
+                        tasksState = tasksState.copy(
+                            todoTasks = tasks,
+                            tasksOrder = it
+                        )
+                    }
+            }
+        }
+    }
+
+    private fun getHighPriorityTasks() {
+        viewModelScope.launch {
+            useCases.getHighPriorityTasks().collect {
+                tasksState = tasksState.copy(
+                    highPriorityTasks = it
+                )
+            }
         }
     }
 
@@ -120,17 +147,11 @@ class TodoListViewModel @Inject constructor(
                     action = SnackBarAction(
                         name = "Undo",
                         action = {
-                            restoreTask(toDoTask)
+                            restoreTask()
                         }
                     )
                 )
             )
-        }
-    }
-
-    private fun deleteAllTasks() {
-        viewModelScope.launch {
-            useCases.deleteAllTasksUseCase()
         }
     }
 
@@ -139,7 +160,7 @@ class TodoListViewModel @Inject constructor(
         getTasksJob = viewModelScope.launch {
             //delay(200)
             if (searchQuery.isEmpty()) {
-                getAllTasks(tasksState.tasksOrder)
+                getAllTasks()
                 return@launch
             }
             useCases.searchDatabaseUseCase(searchQuery)
@@ -151,7 +172,7 @@ class TodoListViewModel @Inject constructor(
         }
     }
 
-    private fun restoreTask(task: ToDoTask?) {
+    private fun restoreTask() {
         viewModelScope.launch {
             useCases.addTaskUseCase(
                 recentlyDeletedTask?.copy(

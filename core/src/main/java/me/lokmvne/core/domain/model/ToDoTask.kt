@@ -18,6 +18,8 @@ data class ToDoTask(
     var version: Int = 0,
     val description: String,
     val priority: Priority,
+    val illustration: Int,
+    val taskColor: Long,
     val date: LocalDate?,
     val time: LocalTime?
 )

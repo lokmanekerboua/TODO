@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,7 +27,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import me.lokmvne.compose.components.ToDoTextField
+import me.lokmvne.core.R
 import me.lokmvne.core.data.utils.Priority
+import me.lokmvne.core.presentation.todo_task.components.DropDownColorMenuItem
+import me.lokmvne.core.presentation.todo_task.components.DropDownIllustrationMenuItem
 import me.lokmvne.core.presentation.todo_task.components.DropDownMenuItem
 import me.lokmvne.core.presentation.todo_task.components.ToDoDatePickerDialog
 import me.lokmvne.core.presentation.todo_task.components.ToDoTimePickerDialog
@@ -48,6 +52,7 @@ fun ToDoTaskScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
+                .imePadding()
                 .padding(horizontal = 10.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
@@ -124,6 +129,79 @@ fun ToDoTaskScreen(
                 }
             }
 
+            ExposedDropdownMenuBox(
+                expanded = viewModel.isIllustExpended,
+                onExpandedChange = { viewModel.isIllustExpended = it }
+            ) {
+                ToDoTextField(
+                    txt = viewModel.illustText,
+                    label = "Illustration",
+                    readOnly = true,
+                    modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(viewModel.isIllustExpended) },
+                    onValueChange = {}
+                )
+
+                ExposedDropdownMenu(
+                    expanded = viewModel.isIllustExpended,
+                    onDismissRequest = { viewModel.isIllustExpended = false },
+                    matchTextFieldWidth = true,
+                    containerColor = MaterialTheme.colorScheme.background,
+                    shape = RoundedCornerShape(10.dp),
+                    tonalElevation = 10.dp,
+                    shadowElevation = 10.dp
+                ) {
+                    illustrationsList.forEach { illust ->
+                        DropDownIllustrationMenuItem(
+                            title = illust.first,
+                            illustration = illust.second,
+                            onClick = { illustrationTitle, illustration ->
+                                viewModel.isIllustExpended = false
+                                viewModel.illustText = illustrationTitle
+                                viewModel.illustration.value = illustration
+                            }
+                        )
+                    }
+                }
+            }
+
+
+            ExposedDropdownMenuBox(
+                expanded = viewModel.isColorExpended,
+                onExpandedChange = { viewModel.isColorExpended = it }
+            ) {
+                ToDoTextField(
+                    txt = viewModel.colorText,
+                    label = "Task Color",
+                    readOnly = true,
+                    modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(viewModel.isColorExpended) },
+                    onValueChange = {}
+                )
+
+                ExposedDropdownMenu(
+                    expanded = viewModel.isColorExpended,
+                    onDismissRequest = { viewModel.isColorExpended = false },
+                    matchTextFieldWidth = true,
+                    containerColor = MaterialTheme.colorScheme.background,
+                    shape = RoundedCornerShape(10.dp),
+                    tonalElevation = 10.dp,
+                    shadowElevation = 10.dp
+                ) {
+                    colorsList.forEach { color ->
+                        DropDownColorMenuItem(
+                            title = color.first,
+                            color = color.second,
+                            onClick = { title, value ->
+                                viewModel.isColorExpended = false
+                                viewModel.colorText = title
+                                viewModel.taskColor.value = value
+                            }
+                        )
+                    }
+                }
+            }
+
             ToDoTextField(
                 txt = viewModel.description.value,
                 label = "Description",
@@ -181,4 +259,18 @@ fun ToDoTaskScreen(
     }
 }
 
+val colorsList = listOf(
+    "YELLOW" to 0xFFf5f378,
+    "MAGENTA" to 0xFFdcc2ff,
+    "RED" to 0xFFed724c
+)
 
+val illustrationsList = listOf(
+    "illustration1" to R.drawable.illust1,
+    "illustration2" to R.drawable.illust2,
+    "illustration3" to R.drawable.illust3,
+    "illustration4" to R.drawable.illust4,
+    "illustration5" to R.drawable.illust5,
+    "illustration6" to R.drawable.illust6,
+    "illustration7" to R.drawable.illust7,
+)

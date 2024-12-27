@@ -5,11 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import me.lokmvne.core.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -31,15 +28,14 @@ fun ToDoToAppBar(
     showDropDown: () -> Unit,
     hideDropDown: () -> Unit,
     showDeleteDialog: () -> Unit,
-    showNavigationDrawer: () -> Unit,
+    showSearchBox: () -> Unit,
 ) {
 
     TopAppBar(
         title = {
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 10.dp),
+                    .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start
             ) {
@@ -49,26 +45,31 @@ fun ToDoToAppBar(
         windowInsets = WindowInsets.statusBars,
         navigationIcon = {
             Icon(
-                imageVector = Icons.Default.Menu,
+                painter = painterResource(R.drawable.menu),
                 contentDescription = "App Menu",
-                modifier = Modifier.clickable {
-                    showNavigationDrawer()
-                }
+                modifier = Modifier.clickable {}
             )
         },
         actions = {
 
             Icon(
-                painter = painterResource(R.drawable.tablersortdescending),
+                imageVector = Icons.Default.Search,
+                contentDescription = null,
+                modifier = Modifier.clickable {
+                    showSearchBox()
+                }
+            )
+
+            Icon(
+                painter = painterResource(R.drawable.sort),
                 contentDescription = null,
                 modifier = Modifier
-                    .padding(10.dp)
                     .clickable {
                         showOrderingSection()
                     }
             )
             Icon(
-                imageVector = Icons.Default.MoreVert,
+                painter = painterResource(R.drawable.dots),
                 contentDescription = null,
                 modifier = Modifier.clickable {
                     showDropDown()

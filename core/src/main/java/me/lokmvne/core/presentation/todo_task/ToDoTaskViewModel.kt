@@ -20,18 +20,22 @@ class ToDoTaskViewModel @Inject constructor(
     private val useCases: ToDoUseCases
 ) : ViewModel() {
     var isPriorityExpended by mutableStateOf(false)
+    var isIllustExpended by mutableStateOf(false)
+    var isColorExpended by mutableStateOf(false)
     var isDatePickerShowed by mutableStateOf(false)
     var isTimePickerShowed by mutableStateOf(false)
+
+    var illustText by mutableStateOf(illustrationsList.first().first)
+    var colorText by mutableStateOf(colorsList.first().first)
 
     val title = mutableStateOf("")
     val description = mutableStateOf("")
     val priority = mutableStateOf(Priority.LOW)
+    var illustration = mutableStateOf(illustrationsList.first().second)
+    var taskColor = mutableStateOf(colorsList.first().second)
     val date = mutableStateOf<LocalDate?>(null)
     val time = mutableStateOf<LocalTime?>(null)
 
-    init {
-
-    }
 
     fun onEvent(event: TaskEvents) {
         when (event) {
@@ -55,6 +59,8 @@ class ToDoTaskViewModel @Inject constructor(
                     title = title.value,
                     description = description.value,
                     priority = priority.value,
+                    illustration = illustration.value,
+                    taskColor = taskColor.value,
                     date = date.value,
                     time = time.value
                 )
@@ -71,8 +77,15 @@ class ToDoTaskViewModel @Inject constructor(
                         title.value = it.title
                         description.value = it.description
                         priority.value = it.priority
+                        illustration.value = it.illustration
+                        taskColor.value = it.taskColor
                         date.value = it.date
                         time.value = it.time
+
+                        colorText =
+                            colorsList.find { color -> color.second == it.taskColor }!!.first
+                        illustText =
+                            illustrationsList.find { illus -> illus.second == it.illustration }!!.first
                     }
             }
         }
@@ -87,6 +100,8 @@ class ToDoTaskViewModel @Inject constructor(
                     title = title.value,
                     description = description.value,
                     priority = priority.value,
+                    illustration = illustration.value,
+                    taskColor = taskColor.value,
                     date = date.value,
                     time = time.value
                 )

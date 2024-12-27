@@ -1,4 +1,4 @@
-package me.lokmvne.core.domain.utils
+package me.lokmvne.common.utils
 
 sealed class OrderType {
     data object Ascending : OrderType()

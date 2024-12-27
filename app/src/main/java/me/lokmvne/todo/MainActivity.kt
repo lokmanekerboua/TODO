@@ -7,18 +7,18 @@ import androidx.activity.enableEdgeToEdge
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import me.lokmvne.compose.ui.theme.ToDoTheme
+import me.lokmvne.compose.ui.theme.ToDoAppTheme
+import me.lokmvne.todo.presentstion.navigation.MainNavGraph
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    lateinit var navHostController: NavHostController
-
+    private lateinit var navHostController: NavHostController
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            navHostController = rememberNavController()
-            ToDoTheme {
+            ToDoAppTheme {
+                navHostController = rememberNavController()
                 MainNavGraph(navHostController)
             }
         }

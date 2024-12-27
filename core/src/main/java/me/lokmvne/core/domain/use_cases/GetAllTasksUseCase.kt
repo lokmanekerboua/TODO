@@ -3,8 +3,8 @@ package me.lokmvne.core.domain.use_cases
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import me.lokmvne.core.domain.model.ToDoTask
-import me.lokmvne.core.domain.utils.OrderType
-import me.lokmvne.core.domain.utils.ToDoOrder
+import me.lokmvne.common.utils.OrderType
+import me.lokmvne.common.utils.ToDoOrder
 import me.lokmvne.core.repository.ToDoRepository
 
 class GetAllTasksUseCase(private val repository: ToDoRepository) {
