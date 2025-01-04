@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun AddButton(navigateToTaskScreen: (Int) -> Unit) {
+fun AddButton(navigateToTaskScreen: (Long) -> Unit) {
     FloatingActionButton(
         onClick = { navigateToTaskScreen(-1) },
         containerColor = MaterialTheme.colorScheme.secondary,

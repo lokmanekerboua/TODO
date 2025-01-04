@@ -5,7 +5,7 @@ import me.lokmvne.core.domain.model.ToDoTask
 import me.lokmvne.core.repository.ToDoRepository
 
 class GetSelectedTaskUseCase(private val repository: ToDoRepository) {
-    operator fun invoke(toDoTaskId: Int): Flow<ToDoTask> {
+    operator fun invoke(toDoTaskId: Long): Flow<ToDoTask> {
         return repository.getSelectedTask(toDoTaskId)
     }
 }

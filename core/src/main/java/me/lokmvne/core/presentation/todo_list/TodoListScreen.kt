@@ -1,17 +1,20 @@
 package me.lokmvne.core.presentation.todo_list
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -23,14 +26,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import me.lokmvne.common.utils.ObserveAsEvents
-import me.lokmvne.compose.ui.theme.colorCard2
 import me.lokmvne.compose.ui.theme.colorCard4
+import me.lokmvne.core.R
 import me.lokmvne.core.presentation.todo_list.components.AddButton
 import me.lokmvne.core.presentation.todo_list.components.DeleteDialog
 import me.lokmvne.core.presentation.todo_list.components.OrderingSection
@@ -42,7 +46,7 @@ import me.lokmvne.core.utils.SnackBarController
 
 @Composable
 fun TodoListScreen(
-    navigateToTaskScreen: (Int) -> Unit,
+    navigateToTaskScreen: (Long) -> Unit,
 ) {
     val viewModel = hiltViewModel<TodoListViewModel>()
     val scope = rememberCoroutineScope()
@@ -129,20 +133,39 @@ fun TodoListScreen(
                     ) {
                         Text(text = "TOP", fontWeight = FontWeight.Bold, fontSize = 18.sp)
                     }
-                    LazyRow {
-                        items(viewModel.tasksState.highPriorityTasks) {
-                            key("${it.id}${it.version}") {
-                                TodoItem(
-                                    todoTask = it,
-                                    illustration = it.illustration,
-                                    modifier = Modifier
-                                        .size(200.dp, 130.dp)
-                                        .padding(10.dp),
-                                    containerColor = Color(it.taskColor),
-                                    contentColor = colorCard4,
-                                    descriptionMaxLines = 3,
-                                    onClick = { navigateToTaskScreen(it.id) }
-                                )
+                    if (viewModel.tasksState.highPriorityTasks.isEmpty()) {
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(130.dp),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Image(
+                                painter = painterResource(R.drawable.nocontent),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(100.dp)
+                                    .padding(5.dp)
+                            )
+                            Text("No Tasks", color = MaterialTheme.colorScheme.onBackground)
+                        }
+                    } else {
+                        LazyRow {
+                            items(viewModel.tasksState.highPriorityTasks) {
+                                key("${it.id}${it.version}") {
+                                    TodoItem(
+                                        todoTask = it,
+                                        illustration = it.illustration,
+                                        modifier = Modifier
+                                            .size(200.dp, 130.dp)
+                                            .padding(10.dp),
+                                        containerColor = Color(it.taskColor),
+                                        contentColor = colorCard4,
+                                        descriptionMaxLines = 3,
+                                        onClick = { navigateToTaskScreen(it.id) }
+                                    )
+                                }
                             }
                         }
                     }
@@ -156,23 +179,41 @@ fun TodoListScreen(
                     Text(text = "All Tasks", fontWeight = FontWeight.Bold, fontSize = 18.sp)
                 }
 
-                LazyColumn {
-                    items(viewModel.tasksState.todoTasks) {
-                        key("${it.id}${it.version}") {
-                            SwipeToDoItem(
-                                todoTask = it,
-                                onClick = {
-                                    navigateToTaskScreen(it.id)
-                                },
-                                onDelete = {
-                                    viewModel.onEvent(TasksListEvents.DeleteTask(it))
-                                },
-                                illustration = it.illustration,
-                                modifier = Modifier.padding(horizontal = 10.dp),
-                                containerColor = Color(it.taskColor),
-                                contentColor = colorCard4,
-                                descriptionMaxLines = 1,
-                            )
+                if (viewModel.tasksState.todoTasks.isEmpty()) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Image(
+                            painter = painterResource(R.drawable.nocontent),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(100.dp)
+                                .padding(5.dp)
+                        )
+                        Text("No Tasks", color = MaterialTheme.colorScheme.onBackground)
+                    }
+                } else {
+                    LazyColumn {
+                        items(viewModel.tasksState.todoTasks) {
+                            key("${it.id}${it.version}") {
+                                SwipeToDoItem(
+                                    todoTask = it,
+                                    onClick = {
+                                        navigateToTaskScreen(it.id)
+                                    },
+                                    onDelete = {
+                                        viewModel.onEvent(TasksListEvents.DeleteTask(it))
+                                    },
+                                    illustration = it.illustration,
+                                    modifier = Modifier.padding(horizontal = 10.dp),
+                                    containerColor = Color(it.taskColor),
+                                    contentColor = colorCard4,
+                                    descriptionMaxLines = 1,
+                                )
+                            }
                         }
                     }
                 }

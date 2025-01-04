@@ -6,7 +6,7 @@ import me.lokmvne.common.navigation.NavToDoListScreen
 import me.lokmvne.core.presentation.todo_list.TodoListScreen
 
 fun NavGraphBuilder.listComposableScreen(
-    navigateToTaskScreen: (Int) -> Unit,
+    navigateToTaskScreen: (Long) -> Unit,
 ) {
     composable<NavToDoListScreen> {
         TodoListScreen(navigateToTaskScreen)

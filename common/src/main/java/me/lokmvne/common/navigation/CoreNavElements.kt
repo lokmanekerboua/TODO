@@ -10,5 +10,5 @@ object NavToDoListScreen
 
 @Serializable
 data class NavToDoTaskScreen(
-    val taskId: Int = -1,
+    val taskId: Long = -1L,
 )

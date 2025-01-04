@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import me.lokmvne.common.data_store.ToDoPreferences
 import me.lokmvne.core.domain.model.ToDoTask
 import me.lokmvne.core.domain.use_cases.ToDoUseCases
+import me.lokmvne.core.utils.AlarmController
 import me.lokmvne.core.utils.SnackBarAction
 import me.lokmvne.core.utils.SnackBarController
 import me.lokmvne.core.utils.SnackBarEvent
@@ -19,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class TodoListViewModel @Inject constructor(
     private val useCases: ToDoUseCases,
-    private val toDoPreferences: ToDoPreferences
+    private val toDoPreferences: ToDoPreferences,
+    private val alarmController: AlarmController
 ) : ViewModel() {
     private var recentlyDeletedTask: ToDoTask? = null
 
@@ -140,6 +142,7 @@ class TodoListViewModel @Inject constructor(
     private fun deleteTask(toDoTask: ToDoTask) {
         viewModelScope.launch {
             useCases.deleteTaskUseCase(toDoTask)
+            alarmController.cancelAlarm(toDoTask)
             recentlyDeletedTask = toDoTask
             SnackBarController.sendEvent(
                 event = SnackBarEvent(
@@ -174,12 +177,14 @@ class TodoListViewModel @Inject constructor(
 
     private fun restoreTask() {
         viewModelScope.launch {
-            useCases.addTaskUseCase(
-                recentlyDeletedTask?.copy(
-                    version = recentlyDeletedTask?.version?.plus(1) ?: 0
+            if (recentlyDeletedTask != null) {
+                useCases.addTaskUseCase(
+                    recentlyDeletedTask!!.copy(
+                        version = recentlyDeletedTask?.version?.plus(1) ?: 0
+                    )
                 )
-                    ?: return@launch
-            )
+                alarmController.setAlarmClock(recentlyDeletedTask!!)
+            }
             recentlyDeletedTask = null
         }
     }

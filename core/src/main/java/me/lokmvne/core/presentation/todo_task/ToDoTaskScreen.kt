@@ -43,7 +43,7 @@ import java.time.ZoneOffset
 @Composable
 fun ToDoTaskScreen(
     navigateToListScreen: () -> Unit,
-    taskId: Int,
+    taskId: Long,
 ) {
     val viewModel = hiltViewModel<ToDoTaskViewModel>()
 
@@ -58,15 +58,18 @@ fun ToDoTaskScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             ToDoTextField(
-                txt = viewModel.title.value,
+                txt = viewModel.singleTaskState.title,
                 label = "Title",
                 onValueChange = {
-                    viewModel.title.value = it
+                    viewModel.singleTaskState = viewModel.singleTaskState.copy(
+                        title = it
+                    )
                 }
             )
 
             ToDoTextField(
-                txt = viewModel.date.value?.let { dateTimeToString(it, "yyyy-MM-dd") } ?: "",
+                txt = viewModel.singleTaskState.date.let { dateTimeToString(it, "yyyy-MM-dd") }
+                    ?: "",
                 label = "Date",
                 readOnly = true,
                 placeholder = "yyyy-MM-dd",
@@ -76,13 +79,15 @@ fun ToDoTaskScreen(
                         imageVector = Icons.Default.DateRange,
                         contentDescription = null,
                         modifier = Modifier.clickable {
-                            viewModel.isDatePickerShowed = true
+                            viewModel.singleTaskState = viewModel.singleTaskState.copy(
+                                isDatePickerShowed = true
+                            )
                         }
                     )
                 }
             )
             ToDoTextField(
-                txt = viewModel.time.value?.let { dateTimeToString(it, "HH:mm") } ?: "",
+                txt = viewModel.singleTaskState.time.let { dateTimeToString(it, "HH:mm") } ?: "",
                 label = "Time",
                 readOnly = true,
                 placeholder = "HH:mm",
@@ -92,28 +97,38 @@ fun ToDoTaskScreen(
                         imageVector = Icons.Default.DateRange,
                         contentDescription = null,
                         modifier = Modifier.clickable {
-                            viewModel.isTimePickerShowed = true
+                            viewModel.singleTaskState = viewModel.singleTaskState.copy(
+                                isTimePickerShowed = true
+                            )
                         }
                     )
                 }
             )
 
             ExposedDropdownMenuBox(
-                expanded = viewModel.isPriorityExpended,
-                onExpandedChange = { viewModel.isPriorityExpended = it }
+                expanded = viewModel.singleTaskState.isPriorityExpended,
+                onExpandedChange = {
+                    viewModel.singleTaskState = viewModel.singleTaskState.copy(
+                        isPriorityExpended = it
+                    )
+                }
             ) {
                 ToDoTextField(
-                    txt = viewModel.priority.value.name,
+                    txt = viewModel.singleTaskState.priority.name,
                     label = "Priority",
                     readOnly = true,
                     modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(viewModel.isPriorityExpended) },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(viewModel.singleTaskState.isPriorityExpended) },
                     onValueChange = {}
                 )
 
                 ExposedDropdownMenu(
-                    expanded = viewModel.isPriorityExpended,
-                    onDismissRequest = { viewModel.isPriorityExpended = false },
+                    expanded = viewModel.singleTaskState.isPriorityExpended,
+                    onDismissRequest = {
+                        viewModel.singleTaskState = viewModel.singleTaskState.copy(
+                            isPriorityExpended = false
+                        )
+                    },
                     matchTextFieldWidth = true,
                     containerColor = MaterialTheme.colorScheme.background,
                     shape = RoundedCornerShape(10.dp),
@@ -122,29 +137,39 @@ fun ToDoTaskScreen(
                 ) {
                     Priority.entries.forEach { priorityItem ->
                         DropDownMenuItem(priority = priorityItem, onClick = {
-                            viewModel.priority.value = it
-                            viewModel.isPriorityExpended = false
+                            viewModel.singleTaskState = viewModel.singleTaskState.copy(
+                                priority = it,
+                                isPriorityExpended = false
+                            )
                         })
                     }
                 }
             }
 
             ExposedDropdownMenuBox(
-                expanded = viewModel.isIllustExpended,
-                onExpandedChange = { viewModel.isIllustExpended = it }
+                expanded = viewModel.singleTaskState.isIllustExpended,
+                onExpandedChange = {
+                    viewModel.singleTaskState = viewModel.singleTaskState.copy(
+                        isIllustExpended = it
+                    )
+                }
             ) {
                 ToDoTextField(
-                    txt = viewModel.illustText,
+                    txt = viewModel.singleTaskState.illustText,
                     label = "Illustration",
                     readOnly = true,
                     modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(viewModel.isIllustExpended) },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(viewModel.singleTaskState.isIllustExpended) },
                     onValueChange = {}
                 )
 
                 ExposedDropdownMenu(
-                    expanded = viewModel.isIllustExpended,
-                    onDismissRequest = { viewModel.isIllustExpended = false },
+                    expanded = viewModel.singleTaskState.isIllustExpended,
+                    onDismissRequest = {
+                        viewModel.singleTaskState = viewModel.singleTaskState.copy(
+                            isIllustExpended = false
+                        )
+                    },
                     matchTextFieldWidth = true,
                     containerColor = MaterialTheme.colorScheme.background,
                     shape = RoundedCornerShape(10.dp),
@@ -156,9 +181,11 @@ fun ToDoTaskScreen(
                             title = illust.first,
                             illustration = illust.second,
                             onClick = { illustrationTitle, illustration ->
-                                viewModel.isIllustExpended = false
-                                viewModel.illustText = illustrationTitle
-                                viewModel.illustration.value = illustration
+                                viewModel.singleTaskState = viewModel.singleTaskState.copy(
+                                    isIllustExpended = false,
+                                    illustText = illustrationTitle,
+                                    illustration = illustration
+                                )
                             }
                         )
                     }
@@ -167,21 +194,29 @@ fun ToDoTaskScreen(
 
 
             ExposedDropdownMenuBox(
-                expanded = viewModel.isColorExpended,
-                onExpandedChange = { viewModel.isColorExpended = it }
+                expanded = viewModel.singleTaskState.isColorExpended,
+                onExpandedChange = {
+                    viewModel.singleTaskState = viewModel.singleTaskState.copy(
+                        isColorExpended = it
+                    )
+                }
             ) {
                 ToDoTextField(
-                    txt = viewModel.colorText,
+                    txt = viewModel.singleTaskState.colorText,
                     label = "Task Color",
                     readOnly = true,
                     modifier = Modifier.menuAnchor(MenuAnchorType.PrimaryNotEditable),
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(viewModel.isColorExpended) },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(viewModel.singleTaskState.isColorExpended) },
                     onValueChange = {}
                 )
 
                 ExposedDropdownMenu(
-                    expanded = viewModel.isColorExpended,
-                    onDismissRequest = { viewModel.isColorExpended = false },
+                    expanded = viewModel.singleTaskState.isColorExpended,
+                    onDismissRequest = {
+                        viewModel.singleTaskState = viewModel.singleTaskState.copy(
+                            isColorExpended = false
+                        )
+                    },
                     matchTextFieldWidth = true,
                     containerColor = MaterialTheme.colorScheme.background,
                     shape = RoundedCornerShape(10.dp),
@@ -193,9 +228,11 @@ fun ToDoTaskScreen(
                             title = color.first,
                             color = color.second,
                             onClick = { title, value ->
-                                viewModel.isColorExpended = false
-                                viewModel.colorText = title
-                                viewModel.taskColor.value = value
+                                viewModel.singleTaskState = viewModel.singleTaskState.copy(
+                                    isColorExpended = false,
+                                    colorText = title,
+                                    taskColor = value
+                                )
                             }
                         )
                     }
@@ -203,14 +240,16 @@ fun ToDoTaskScreen(
             }
 
             ToDoTextField(
-                txt = viewModel.description.value,
+                txt = viewModel.singleTaskState.description,
                 label = "Description",
                 onValueChange = {
-                    viewModel.description.value = it
+                    viewModel.singleTaskState = viewModel.singleTaskState.copy(
+                        description = it
+                    )
                 }
             )
 
-            if (taskId == -1) {
+            if (taskId == -1L) {
                 Button(
                     onClick = {
                         viewModel.onEvent(TaskEvents.AddTask)
@@ -221,7 +260,7 @@ fun ToDoTaskScreen(
                 }
             } else {
                 LaunchedEffect(true) {
-                    viewModel.getSelectedTask(taskId)
+                    viewModel.onEvent(TaskEvents.GetSelectedTask(taskId))
                 }
                 Button(
                     onClick = {
@@ -234,24 +273,33 @@ fun ToDoTaskScreen(
             }
         }
 
-        if (viewModel.isDatePickerShowed) {
+        if (viewModel.singleTaskState.isDatePickerShowed) {
             ToDoDatePickerDialog(
-                onDismiss = { viewModel.isDatePickerShowed = false },
+                onDismiss = {
+                    viewModel.singleTaskState = viewModel.singleTaskState.copy(
+                        isDatePickerShowed = false
+                    )
+                },
                 onConfirm = {
-                    viewModel.date.value =
-                        Instant.ofEpochMilli(it ?: 0).atZone(ZoneOffset.UTC).toLocalDate()
+                    viewModel.singleTaskState = viewModel.singleTaskState.copy(
+                        date = Instant.ofEpochMilli(it ?: 0).atZone(ZoneOffset.UTC).toLocalDate()
+                    )
                 }
             )
         }
 
-        if (viewModel.isTimePickerShowed) {
+        if (viewModel.singleTaskState.isTimePickerShowed) {
             ToDoTimePickerDialog(
                 onDismiss = {
-                    viewModel.isTimePickerShowed = false
+                    viewModel.singleTaskState = viewModel.singleTaskState.copy(
+                        isTimePickerShowed = false
+                    )
                 },
                 onConfirm = {
                     val time = it.hour * 3600 + it.minute * 60L
-                    viewModel.time.value = LocalTime.ofSecondOfDay(time)
+                    viewModel.singleTaskState = viewModel.singleTaskState.copy(
+                        time = LocalTime.ofSecondOfDay(time)
+                    )
                 }
             )
         }
@@ -273,4 +321,8 @@ val illustrationsList = listOf(
     "illustration5" to R.drawable.illust5,
     "illustration6" to R.drawable.illust6,
     "illustration7" to R.drawable.illust7,
+    "illustration8" to R.drawable.illust8,
+    "illustration9" to R.drawable.illust9,
+    "illustration10" to R.drawable.illust10,
+    "illustration11" to R.drawable.illust11,
 )

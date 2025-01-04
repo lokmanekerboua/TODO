@@ -6,9 +6,9 @@ import me.lokmvne.core.domain.model.ToDoTask
 interface ToDoRepository {
     fun getAllTasks(): Flow<List<ToDoTask>>
 
-    suspend fun addTask(toDoTask: ToDoTask)
+    suspend fun addTask(toDoTask: ToDoTask): Long
 
-    fun getSelectedTask(taskId: Int): Flow<ToDoTask>
+    fun getSelectedTask(taskId: Long): Flow<ToDoTask>
 
     fun getHighPriorityTasks(): Flow<List<ToDoTask>>
 

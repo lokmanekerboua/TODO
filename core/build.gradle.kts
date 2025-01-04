@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.google.devtools.ksp)
     alias(libs.plugins.google.dagger.hilt)
     alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 val projectJavaVersion = rootProject.extra["projectJavaVersion"] as JavaVersion

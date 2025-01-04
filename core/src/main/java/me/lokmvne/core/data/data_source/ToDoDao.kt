@@ -8,7 +8,6 @@ import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import me.lokmvne.core.domain.model.ToDoTask
-import java.time.LocalDate
 
 @Dao
 interface ToDoDao {
@@ -16,7 +15,7 @@ interface ToDoDao {
     fun getAllTasks(): Flow<List<ToDoTask>>
 
     @Query("SELECT * FROM todo_task_table WHERE id = :taskId")
-    fun getSelectedTask(taskId: Int): Flow<ToDoTask>
+    fun getSelectedTask(taskId: Long): Flow<ToDoTask>
 
     @Query("SELECT * FROM todo_task_table WHERE priority = 'HIGH'")
     fun getHighPriorityTasks(): Flow<List<ToDoTask>>
@@ -24,8 +23,8 @@ interface ToDoDao {
     @Query("SELECT * FROM todo_task_table WHERE date BETWEEN :startDate AND :endDate")
     fun getNearTasks(startDate: Long, endDate: Long): Flow<List<ToDoTask>>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addTask(toDoTask: ToDoTask)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun addTask(toDoTask: ToDoTask): Long
 
     @Update
     suspend fun updateTask(toDoTask: ToDoTask)

@@ -4,7 +4,7 @@ import me.lokmvne.core.domain.model.ToDoTask
 import me.lokmvne.core.repository.ToDoRepository
 
 class AddTaskUseCase(private val repository: ToDoRepository) {
-    suspend operator fun invoke(task: ToDoTask) {
-        repository.addTask(task)
+    suspend operator fun invoke(task: ToDoTask): Long {
+        return repository.addTask(task)
     }
 }

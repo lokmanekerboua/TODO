@@ -13,7 +13,7 @@ class Screens(navHostController: NavHostController) {
         }
     }
 
-    val todoTask: (Int) -> Unit = { taskId ->
+    val todoTask: (Long) -> Unit = { taskId ->
         navHostController.navigate(NavToDoTaskScreen(taskId))
     }
 }

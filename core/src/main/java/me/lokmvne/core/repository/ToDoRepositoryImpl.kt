@@ -9,11 +9,11 @@ class ToDoRepositoryImpl(private val dao: ToDoDao) : ToDoRepository {
         return dao.getAllTasks()
     }
 
-    override suspend fun addTask(toDoTask: ToDoTask) {
+    override suspend fun addTask(toDoTask: ToDoTask): Long {
         return dao.addTask(toDoTask)
     }
 
-    override fun getSelectedTask(taskId: Int): Flow<ToDoTask> {
+    override fun getSelectedTask(taskId: Long): Flow<ToDoTask> {
         return dao.getSelectedTask(taskId)
     }
 

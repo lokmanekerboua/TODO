@@ -6,29 +6,29 @@ import java.time.LocalTime
 
 class DateTypeConverter {
     @TypeConverter
-    fun fromTimeStamp(value: Long?): LocalDate? {
-        return value?.let {
-            LocalDate.ofEpochDay(value)
+    fun fromTimeStamp(value: Float): LocalDate {
+        return value.let {
+            LocalDate.ofEpochDay(value.toLong())
         }
     }
 
     @TypeConverter
-    fun dateToTimeStamp(date: LocalDate?): Long? {
-        return date?.toEpochDay()
+    fun dateToTimeStamp(date: LocalDate): Float {
+        return date.toEpochDay().toFloat()
     }
 }
 
 class TimeTypeConverter {
     @TypeConverter
-    fun fromTimeStamp(value: Long?): LocalTime? {
-        return value?.let {
-            LocalTime.ofSecondOfDay(it)
+    fun fromTimeStamp(value: Float): LocalTime {
+        return value.let {
+            LocalTime.ofSecondOfDay(it.toLong())
         }
     }
 
     @TypeConverter
-    fun timeToTimeStamp(time: LocalTime?): Long? {
-        return time?.toSecondOfDay()?.toLong()
+    fun timeToTimeStamp(time: LocalTime): Float {
+        return time.toSecondOfDay().toFloat()
     }
 
 }

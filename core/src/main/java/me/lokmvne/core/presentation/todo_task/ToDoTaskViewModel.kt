@@ -8,34 +8,17 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
-import me.lokmvne.core.data.utils.Priority
 import me.lokmvne.core.domain.model.ToDoTask
 import me.lokmvne.core.domain.use_cases.ToDoUseCases
-import java.time.LocalDate
-import java.time.LocalTime
+import me.lokmvne.core.utils.AlarmController
 import javax.inject.Inject
 
 @HiltViewModel
 class ToDoTaskViewModel @Inject constructor(
-    private val useCases: ToDoUseCases
+    private val useCases: ToDoUseCases,
+    private val alarmController: AlarmController
 ) : ViewModel() {
-    var isPriorityExpended by mutableStateOf(false)
-    var isIllustExpended by mutableStateOf(false)
-    var isColorExpended by mutableStateOf(false)
-    var isDatePickerShowed by mutableStateOf(false)
-    var isTimePickerShowed by mutableStateOf(false)
-
-    var illustText by mutableStateOf(illustrationsList.first().first)
-    var colorText by mutableStateOf(colorsList.first().first)
-
-    val title = mutableStateOf("")
-    val description = mutableStateOf("")
-    val priority = mutableStateOf(Priority.LOW)
-    var illustration = mutableStateOf(illustrationsList.first().second)
-    var taskColor = mutableStateOf(colorsList.first().second)
-    val date = mutableStateOf<LocalDate?>(null)
-    val time = mutableStateOf<LocalTime?>(null)
-
+    var singleTaskState by mutableStateOf(SingleTaskState())
 
     fun onEvent(event: TaskEvents) {
         when (event) {
@@ -48,64 +31,67 @@ class ToDoTaskViewModel @Inject constructor(
             }
 
             is TaskEvents.DeleteTask -> {}
+            is TaskEvents.GetSelectedTask -> {
+                getSelectedTask(event.taskId)
+            }
         }
     }
 
 
     private fun addTask() {
         viewModelScope.launch {
-            useCases.addTaskUseCase(
+            val addedTaskId = useCases.addTaskUseCase(
                 ToDoTask(
-                    title = title.value,
-                    description = description.value,
-                    priority = priority.value,
-                    illustration = illustration.value,
-                    taskColor = taskColor.value,
-                    date = date.value,
-                    time = time.value
+                    title = singleTaskState.title,
+                    description = singleTaskState.description,
+                    priority = singleTaskState.priority,
+                    illustration = singleTaskState.illustration,
+                    taskColor = singleTaskState.taskColor,
+                    date = singleTaskState.date,
+                    time = singleTaskState.time
                 )
             )
+            useCases.getSelectedTaskUseCase(addedTaskId).collect {
+                alarmController.setAlarmClock(it)
+            }
         }
     }
 
-    fun getSelectedTask(taskId: Int) {
-        if (taskId != -1) {
+    private fun getSelectedTask(taskId: Long) {
+        if (taskId != -1L) {
             viewModelScope.launch {
                 useCases.getSelectedTaskUseCase(taskId)
                     .catch {}
                     .collect {
-                        title.value = it.title
-                        description.value = it.description
-                        priority.value = it.priority
-                        illustration.value = it.illustration
-                        taskColor.value = it.taskColor
-                        date.value = it.date
-                        time.value = it.time
-
-                        colorText =
-                            colorsList.find { color -> color.second == it.taskColor }!!.first
-                        illustText =
-                            illustrationsList.find { illus -> illus.second == it.illustration }!!.first
+                        singleTaskState = singleTaskState.copy(
+                            title = it.title,
+                            description = it.description,
+                            priority = it.priority,
+                            illustration = it.illustration,
+                            taskColor = it.taskColor,
+                            date = it.date,
+                            time = it.time
+                        )
                     }
             }
         }
     }
 
 
-    private fun updateTask(taskId: Int) {
+    private fun updateTask(taskId: Long) {
         viewModelScope.launch {
-            useCases.updateTaskUseCase(
-                ToDoTask(
-                    id = taskId,
-                    title = title.value,
-                    description = description.value,
-                    priority = priority.value,
-                    illustration = illustration.value,
-                    taskColor = taskColor.value,
-                    date = date.value,
-                    time = time.value
-                )
+            val task = ToDoTask(
+                id = taskId,
+                title = singleTaskState.title,
+                description = singleTaskState.description,
+                priority = singleTaskState.priority,
+                illustration = singleTaskState.illustration,
+                taskColor = singleTaskState.taskColor,
+                date = singleTaskState.date,
+                time = singleTaskState.time
             )
+            useCases.updateTaskUseCase(task)
+            alarmController.setAlarmClock(task)
         }
     }
 }
