@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.google.devtools.ksp)
     alias(libs.plugins.google.dagger.hilt)
     alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.gms.google.services)
 }
 
 val projectJavaVersion = rootProject.extra["projectJavaVersion"] as JavaVersion
@@ -52,6 +53,7 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":compose"))
     implementation(project(":core"))
+    implementation(project(":auth"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -94,6 +96,16 @@ dependencies {
 
     //dataStore
     implementation(libs.androidx.datastore)
+
+//    //FireBase
+//    implementation(platform(libs.google.firebase.bom))
+//    implementation(libs.google.firebase.analytics)
+//    implementation(libs.google.firebase.auth)
+
+//    //google credentials
+//    implementation(libs.androidx.credentials)
+//    implementation(libs.androidx.credentials.play.services.auth)
+//    implementation(libs.googleid)
 
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)

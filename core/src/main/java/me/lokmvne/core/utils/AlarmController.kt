@@ -5,7 +5,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.parcelize.Parcelize
 import me.lokmvne.core.domain.model.ToDoTask
 import java.time.ZoneId
 import javax.inject.Inject
@@ -30,30 +29,30 @@ class AlarmController @Inject constructor(
         val instant = dateTime.atZone(zoneId).toInstant()
         val alarmTime = instant.toEpochMilli()
 
-        val alarmIntent = Intent(context, ToDoAlarmReceiver::class.java).apply {
-            action = ToDoIntentActions.FIRE_ALARM.action
-            putExtra(TODO_ID_EXTRA, toDoTask.id)
-            putExtra(TODO_TITLE_EXTRA, toDoTask.title)
-            putExtra(TODO_DESC_EXTRA, toDoTask.description)
+        val currentTime = System.currentTimeMillis()
+        if (currentTime < alarmTime) {
+            val alarmIntent = Intent(context, ToDoAlarmReceiver::class.java).apply {
+                action = ToDoIntentActions.FIRE_ALARM.action
+                putExtra(TODO_ID_EXTRA, toDoTask.id)
+                putExtra(TODO_TITLE_EXTRA, toDoTask.title)
+                putExtra(TODO_DESC_EXTRA, toDoTask.description)
+            }
+            val alarmClockPendingIntent = PendingIntent.getBroadcast(
+                context,
+                toDoTask.id.hashCode(),
+                alarmIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+            )
+            alarmManager.cancel(alarmClockPendingIntent)
+            val clockInfo = AlarmManager.AlarmClockInfo(
+                alarmTime,
+                alarmClockPendingIntent
+            )
+            alarmManager.setAlarmClock(
+                clockInfo,
+                alarmClockPendingIntent
+            )
         }
-        val alarmClockPendingIntent = PendingIntent.getBroadcast(
-            context,
-            toDoTask.id.hashCode(),
-            alarmIntent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
-        )
-
-        alarmManager.cancel(alarmClockPendingIntent)
-
-        val clockInfo = AlarmManager.AlarmClockInfo(
-            alarmTime,
-            alarmClockPendingIntent
-        )
-
-        alarmManager.setAlarmClock(
-            clockInfo,
-            alarmClockPendingIntent
-        )
     }
 
     //Note: If the PendingIntent was created with FLAG_ONE_SHOT it cannot be canceled.

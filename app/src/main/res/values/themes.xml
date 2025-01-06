@@ -2,4 +2,12 @@
 <resources>
 
     <style name="Theme.ToDo" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.ToDo.splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/logo1</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="windowSplashScreenBackground">@color/lightBackground</item>
+        <item name="splashScreenIconSize">@dimen/splashscreen_icon_size</item>
+        <item name="postSplashScreenTheme">@style/Theme.ToDo</item>
+    </style>
 </resources>

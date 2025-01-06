@@ -1,8 +1,9 @@
-package me.lokmvne.common.data_store
+package me.lokmvne.common.data.data_store
 
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -10,6 +11,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import me.lokmvne.common.data.data_store.ToDoPreferences.Keys.isFirstTime
 import me.lokmvne.common.utils.OrderType
 import me.lokmvne.common.utils.ToDoOrder
 import me.lokmvne.common.utils.ToDoTheme
@@ -23,6 +25,21 @@ class ToDoPreferences @Inject constructor(@ApplicationContext context: Context) 
     private object Keys {
         val toDoOrder = stringPreferencesKey("toDoOrder")
         val theme = stringPreferencesKey("theme")
+        val isFirstTime = booleanPreferencesKey("isFirstTime")
+    }
+
+    suspend fun setFirstTime() {
+        todoPreferences.edit { preferences ->
+            preferences[Keys.isFirstTime] = false
+        }
+    }
+
+    fun getFirstTime(): Flow<Boolean> {
+        return todoPreferences.data
+            .catch { }
+            .map {
+                it[Keys.isFirstTime] ?: true
+            }
     }
 
     suspend fun setTheme(theme: ToDoTheme) {

@@ -59,6 +59,7 @@ dependencies {
 
     implementation(project(":common"))
     implementation(project(":compose"))
+    implementation(project(":auth"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -109,6 +110,13 @@ dependencies {
 
     //dataStore
     implementation(libs.androidx.datastore)
+
+    //coil
+    implementation(libs.io.coil)
+
+    //FireBase
+    implementation(platform(libs.google.firebase.bom))
+    implementation(libs.google.firebase.auth)
 
     implementation(libs.navigation.compose)
     implementation(libs.kotlinx.serialization.json)

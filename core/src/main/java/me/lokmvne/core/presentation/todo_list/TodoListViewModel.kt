@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import me.lokmvne.common.data_store.ToDoPreferences
+import me.lokmvne.common.data.data_store.ToDoPreferences
 import me.lokmvne.core.domain.model.ToDoTask
 import me.lokmvne.core.domain.use_cases.ToDoUseCases
 import me.lokmvne.core.utils.AlarmController
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class TodoListViewModel @Inject constructor(
     private val useCases: ToDoUseCases,
     private val toDoPreferences: ToDoPreferences,
-    private val alarmController: AlarmController
+    private val alarmController: AlarmController,
 ) : ViewModel() {
     private var recentlyDeletedTask: ToDoTask? = null
 
@@ -29,6 +29,8 @@ class TodoListViewModel @Inject constructor(
 
     var tasksState by mutableStateOf(TasksState())
         private set
+
+    var getState by mutableStateOf(getTaksState.IDLE)
 
     private var getTasksJob: Job? = null
 
@@ -124,6 +126,7 @@ class TodoListViewModel @Inject constructor(
                             todoTasks = tasks,
                             tasksOrder = it
                         )
+                        getState = getTaksState.FINISH
                     }
             }
         }
@@ -188,4 +191,10 @@ class TodoListViewModel @Inject constructor(
             recentlyDeletedTask = null
         }
     }
+}
+
+enum class getTaksState {
+    IDLE,
+    LOADING,
+    FINISH
 }

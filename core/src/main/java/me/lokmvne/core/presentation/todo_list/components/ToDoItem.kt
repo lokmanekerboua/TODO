@@ -1,6 +1,5 @@
 package me.lokmvne.core.presentation.todo_list.components
 
-import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandHorizontally
@@ -40,22 +39,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import me.lokmvne.compose.ui.theme.ToDoAppTheme
-import me.lokmvne.compose.ui.theme.colorCard1
-import me.lokmvne.compose.ui.theme.colorCard2
-import me.lokmvne.compose.ui.theme.colorCard3
-import me.lokmvne.compose.ui.theme.colorCard4
-import me.lokmvne.core.R
-import me.lokmvne.core.data.utils.Priority
 import me.lokmvne.core.domain.model.ToDoTask
-import java.time.LocalDate
-import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 
@@ -93,7 +82,7 @@ fun SwipeToDoItem(
         ) + fadeOut(),
         enter = expandHorizontally(
             animationSpec = tween(durationMillis = 400),
-            expandFrom = Alignment.Start
+            expandFrom = Alignment.End
         ) + fadeIn()
     ) {
         SwipeToDismissBox(

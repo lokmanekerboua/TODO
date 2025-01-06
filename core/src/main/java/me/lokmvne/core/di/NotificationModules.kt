@@ -20,6 +20,7 @@ object NotificationModules {
     fun provideToDoNotification(@ApplicationContext context: Context): NotificationCompat.Builder {
         return NotificationCompat.Builder(context, TODO_NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(me.lokmvne.common.R.drawable.logo_light)
+            //.setStyle(NotificationCompat.DecoratedCustomViewStyle())
             .setPriority(NotificationCompat.PRIORITY_MAX)
     }
 

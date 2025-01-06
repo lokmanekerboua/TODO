@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -31,6 +32,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import me.lokmvne.common.utils.ObserveAsEvents
 import me.lokmvne.compose.ui.theme.colorCard4
@@ -47,6 +50,7 @@ import me.lokmvne.core.utils.SnackBarController
 @Composable
 fun TodoListScreen(
     navigateToTaskScreen: (Long) -> Unit,
+    goToProfile: () -> Unit,
 ) {
     val viewModel = hiltViewModel<TodoListViewModel>()
     val scope = rememberCoroutineScope()
@@ -79,6 +83,8 @@ fun TodoListScreen(
             snackbarHost = { SnackbarHost(viewModel.tasksState.snackBarState) },
             topBar = {
                 ToDoToAppBar(
+                    photoUrl = Firebase.auth.currentUser?.photoUrl.toString(),
+                    goToProfile = goToProfile,
                     isTopAppBarDropdownExpanded = viewModel.tasksState.isTopAppBarDropdownExpanded,
                     showOrderingSection = { viewModel.onEvent(TasksListEvents.ShowOrderingSection) },
                     showDropDown = { viewModel.onEvent(TasksListEvents.ExpandTopAppBarDropdown) },
@@ -125,19 +131,72 @@ fun TodoListScreen(
                 }
 
 //-----------------------------Tasks List----------------------------------------------
-                Column {
+                if (viewModel.getState == getTaksState.IDLE || viewModel.getState == getTaksState.LOADING) {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                } else {
+                    Column {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 5.dp, horizontal = 10.dp)
+                        ) {
+                            Text(text = "TOP", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                        }
+                        if (viewModel.tasksState.highPriorityTasks.isEmpty()) {
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(130.dp),
+                                verticalArrangement = Arrangement.Center,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Image(
+                                    painter = painterResource(R.drawable.nocontent),
+                                    contentDescription = null,
+                                    modifier = Modifier
+                                        .size(100.dp)
+                                        .padding(5.dp)
+                                )
+                                Text("No Tasks", color = MaterialTheme.colorScheme.onBackground)
+                            }
+                        } else {
+                            LazyRow {
+                                items(viewModel.tasksState.highPriorityTasks) {
+                                    key("${it.id}${it.version}") {
+                                        TodoItem(
+                                            todoTask = it,
+                                            illustration = it.illustration,
+                                            modifier = Modifier
+                                                .size(200.dp, 130.dp)
+                                                .padding(10.dp),
+                                            containerColor = Color(it.taskColor),
+                                            contentColor = colorCard4,
+                                            descriptionMaxLines = 3,
+                                            onClick = { navigateToTaskScreen(it.id) }
+                                        )
+                                    }
+                                }
+                            }
+                        }
+                    }
+
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 5.dp, horizontal = 10.dp)
+                            .padding(vertical = 10.dp, horizontal = 10.dp)
                     ) {
-                        Text(text = "TOP", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                        Text(text = "All Tasks", fontWeight = FontWeight.Bold, fontSize = 18.sp)
                     }
-                    if (viewModel.tasksState.highPriorityTasks.isEmpty()) {
+
+                    if (viewModel.tasksState.todoTasks.isEmpty()) {
                         Column(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .height(130.dp),
+                                .fillMaxSize(),
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
@@ -151,68 +210,24 @@ fun TodoListScreen(
                             Text("No Tasks", color = MaterialTheme.colorScheme.onBackground)
                         }
                     } else {
-                        LazyRow {
-                            items(viewModel.tasksState.highPriorityTasks) {
+                        LazyColumn {
+                            items(viewModel.tasksState.todoTasks) {
                                 key("${it.id}${it.version}") {
-                                    TodoItem(
+                                    SwipeToDoItem(
                                         todoTask = it,
+                                        onClick = {
+                                            navigateToTaskScreen(it.id)
+                                        },
+                                        onDelete = {
+                                            viewModel.onEvent(TasksListEvents.DeleteTask(it))
+                                        },
                                         illustration = it.illustration,
-                                        modifier = Modifier
-                                            .size(200.dp, 130.dp)
-                                            .padding(10.dp),
+                                        modifier = Modifier.padding(horizontal = 10.dp),
                                         containerColor = Color(it.taskColor),
                                         contentColor = colorCard4,
-                                        descriptionMaxLines = 3,
-                                        onClick = { navigateToTaskScreen(it.id) }
+                                        descriptionMaxLines = 1,
                                     )
                                 }
-                            }
-                        }
-                    }
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 10.dp, horizontal = 10.dp)
-                ) {
-                    Text(text = "All Tasks", fontWeight = FontWeight.Bold, fontSize = 18.sp)
-                }
-
-                if (viewModel.tasksState.todoTasks.isEmpty()) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Image(
-                            painter = painterResource(R.drawable.nocontent),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(100.dp)
-                                .padding(5.dp)
-                        )
-                        Text("No Tasks", color = MaterialTheme.colorScheme.onBackground)
-                    }
-                } else {
-                    LazyColumn {
-                        items(viewModel.tasksState.todoTasks) {
-                            key("${it.id}${it.version}") {
-                                SwipeToDoItem(
-                                    todoTask = it,
-                                    onClick = {
-                                        navigateToTaskScreen(it.id)
-                                    },
-                                    onDelete = {
-                                        viewModel.onEvent(TasksListEvents.DeleteTask(it))
-                                    },
-                                    illustration = it.illustration,
-                                    modifier = Modifier.padding(horizontal = 10.dp),
-                                    containerColor = Color(it.taskColor),
-                                    contentColor = colorCard4,
-                                    descriptionMaxLines = 1,
-                                )
                             }
                         }
                     }
