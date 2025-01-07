@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="TopTasks">الأهم</string>
+    <string name="NoTasks">لا توجد مهام</string>
+    <string name="AllTasks">كل المهام</string>
+    <string name="AddTask_Fab">إضافة مهمة</string>
+
+    <string name="order_asc">تصاعدي</string>
+    <string name="order_desc">تنازلي</string>
+    <string name="order_priority">الأولوية</string>
+    <string name="order_title">العنوان</string>
+    <string name="order_date">التاريخ</string>
+    <string name="time">الوقت</string>
+
+    <string name="deleteAll">حذف الكل</string>
+
+    <string name="deleteAllTitle">حذف جميع المهام</string>
+    <string name="deleteAllDescription">هل أنت متأكد أنك تريد حذف جميع المهام؟</string>
+
+    <string name="delete">حذف</string>
+    <string name="dismiss">إلغاء</string>
+    <string name="confirm">تأكيد</string>
+
+    <string name="search">بحث…</string>
+
+    <string name="signOut">تسجيل الخروج</string>
+    <string name="signOut_desc">هل أنت متأكد أنك تريد تسجيل الخروج؟</string>
+
+
+    <string name="save">حفظ</string>
+    <string name="update">تحديث</string>
+    <string name="description">الوصف</string>
+    <string name="taskColor">اللون</string>
+</resources>

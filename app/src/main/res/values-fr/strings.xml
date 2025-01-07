@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ToDo</string>
+
+    <string name="page1_title">Organisez vos tâches</string>
+    <string name="page1_description">Planifiez et programmez facilement vos tâches grâce à notre interface intuitive. Atteignez vos objectifs quotidiens grâce à une catégorisation intelligente et des échéances.</string>
+
+    <string name="page2_title">Ne manquez jamais une échéance</string>
+    <string name="page2_description">Recevez des notifications en temps opportun pour rester sur la bonne voie. Nous vous rappellerons les dates limites et les tâches importantes afin que vous n\'oubliez rien d\'essentiel.</string>
+
+    <string name="page3_title">Concentrez-vous sur l\'essentiel</string>
+    <string name="page3_description">Priorisez vos tâches et mettez en avant celles qui comptent le plus. Restez productif en vous concentrant d\'abord sur les éléments prioritaires.</string>
+</resources>

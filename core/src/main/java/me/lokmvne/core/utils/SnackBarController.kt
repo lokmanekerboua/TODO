@@ -10,7 +10,7 @@ data class SnackBarAction(
 
 data class SnackBarEvent(
     val message: String,
-    val action: SnackBarAction? = null
+    val action: SnackBarAction? = null,
 )
 
 object SnackBarController {

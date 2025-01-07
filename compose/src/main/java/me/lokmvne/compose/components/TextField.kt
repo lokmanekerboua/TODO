@@ -24,6 +24,7 @@ fun ToDoTextField(
     modifier: Modifier = Modifier,
     maxLines: Int = 1,
     readOnly: Boolean = false,
+    containerColor: androidx.compose.ui.graphics.Color = MaterialTheme.colorScheme.background,
     roundedCorner: Int = 10,
     trailingIcon: @Composable () -> Unit = {},
     onValueChange: (String) -> Unit,
@@ -59,9 +60,9 @@ fun ToDoTextField(
             disabledTextColor = MaterialTheme.colorScheme.onBackground,
             errorTextColor = MaterialTheme.colorScheme.error,
 
-            focusedContainerColor = MaterialTheme.colorScheme.background,
-            unfocusedContainerColor = MaterialTheme.colorScheme.background,
-            disabledContainerColor = MaterialTheme.colorScheme.background,
+            focusedContainerColor = containerColor,
+            unfocusedContainerColor = containerColor,
+            disabledContainerColor = containerColor,
             errorContainerColor = MaterialTheme.colorScheme.error,
 
             cursorColor = MaterialTheme.colorScheme.secondary,

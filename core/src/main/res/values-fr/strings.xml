@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="TopTasks">Les plus importantes</string>
+    <string name="NoTasks">Aucune tâche</string>
+    <string name="AllTasks">Toutes les tâches</string>
+    <string name="AddTask_Fab">Ajouter une tâche</string>
+
+    <string name="order_asc">Croissant</string>
+    <string name="order_desc">Décroissant</string>
+    <string name="order_priority">Priorité</string>
+    <string name="order_title">Titre</string>
+    <string name="order_date">Date</string>
+    <string name="time">Heure</string>
+
+    <string name="deleteAll">Tout supprimer</string>
+
+    <string name="deleteAllTitle">Supprimer toutes les tâches</string>
+    <string name="deleteAllDescription">Êtes-vous sûr de vouloir supprimer toutes les tâches ?</string>
+
+    <string name="delete">Supprimer</string>
+    <string name="dismiss">Annuler</string>
+    <string name="confirm">Confirmer</string>
+
+    <string name="search">Rechercher…</string>
+
+    <string name="signOut">Se déconnecter</string>
+    <string name="signOut_desc">Êtes-vous sûr de vouloir vous déconnecter ?</string>
+
+
+    <string name="save">Enregistrer</string>
+    <string name="update">Mettre à jour</string>
+    <string name="description">Description</string>
+    <string name="taskColor">Couleur</string>
+</resources>

@@ -29,8 +29,8 @@ android {
         val constantsFile = rootProject.file("projectconstants.properties")
         val properties = Properties()
         properties.load(constantsFile.inputStream())
-        properties.getProperty("firebase_id") ?: ""
-        buildConfigField("String", "firebase_id", "\"firebaseId\"")
+        val firebaseId = properties.getProperty("firebase_id") ?: ""
+        buildConfigField("String", "firebase_id", "\"$firebaseId\"")
     }
 
     buildTypes {

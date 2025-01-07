@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-12-20T21:26:59.834997300Z">
+        <DropdownSelection timestamp="2025-01-06T22:29:52.101501Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\lokmane\.android\avd\lok1_API_35.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=ce11182bd5a5c00903" />
             </handle>
           </Target>
         </DropdownSelection>

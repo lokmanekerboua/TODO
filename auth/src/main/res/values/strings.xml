@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_cancel_SignIn">You Cancelled the sign in process</string>
+    <string name="error_NoAccount">There is no Google Account on this device!</string>
+    <string name="error_SignIn_Default">An error occurred while signing in</string>
+    <string name="error_credential_missMatched">Credential type is miss matched</string>
+    <string name="error_occurred">An error occurred</string>
+</resources>

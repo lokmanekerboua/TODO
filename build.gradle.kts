@@ -4,7 +4,7 @@ extra["projectJavaVersion"] = JavaVersion.VERSION_17
 extra["projectMinSdkVersion"] = 28
 extra["projectCompileSdkVersion"] = 35
 extra["projectTargetSdkVersion"] = 35
-extra["projectIsMinifyEnabled"] = true
+extra["projectIsMinifyEnabled"] = false
 
 plugins {
     alias(libs.plugins.android.application) apply false

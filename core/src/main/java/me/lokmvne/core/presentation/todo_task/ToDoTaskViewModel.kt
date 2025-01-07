@@ -1,5 +1,6 @@
 package me.lokmvne.core.presentation.todo_task
 
+import android.app.AlarmManager
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -16,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ToDoTaskViewModel @Inject constructor(
     private val useCases: ToDoUseCases,
-    private val alarmController: AlarmController
+    private val alarmController: AlarmController,
+    val alarmManager: AlarmManager,
 ) : ViewModel() {
     var singleTaskState by mutableStateOf(SingleTaskState())
 

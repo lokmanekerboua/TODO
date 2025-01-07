@@ -1,16 +1,18 @@
 package me.lokmvne.core.utils
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ApplicationContext
-import me.lokmvne.core.domain.model.ToDoTask
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -26,7 +28,7 @@ class ToDoAlarmReceiver : BroadcastReceiver() {
 
     @Inject
     @ApplicationContext
-    lateinit var context: Context
+    lateinit var appcontext: Context
 
     override fun onReceive(context: Context?, intent: Intent?) {
         val action = intent?.action
@@ -37,16 +39,22 @@ class ToDoAlarmReceiver : BroadcastReceiver() {
         when (action) {
             ToDoIntentActions.FIRE_ALARM.action -> {
                 if (todoID != null && todoTitle != null && todoDesc != null) {
-                    setNotification(todoID, todoTitle, todoDesc)
-                    Toast.makeText(context, "Task $todoTitle Begins", Toast.LENGTH_SHORT).show()
+                    if (ContextCompat.checkSelfPermission(
+                            appcontext,
+                            Manifest.permission.POST_NOTIFICATIONS
+                        ) == PackageManager.PERMISSION_GRANTED
+                    ) {
+                        setNotification(todoID, todoTitle, todoDesc)
+                    }
                 }
             }
 
             ToDoIntentActions.CANCEL_ALARM.action -> {
                 if (todoID != null && todoTitle != null && todoDesc != null) {
                     cancelNotification(todoID)
-                    Toast.makeText(context, "Task $todoTitle Reminder Canceled", Toast.LENGTH_SHORT).show()
-                    //alarmController.cancelAlarm()
+                    alarmController.cancelAlarm(todoID)
+                    Toast.makeText(context, "Task $todoTitle Reminder Canceled", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
 
@@ -58,14 +66,14 @@ class ToDoAlarmReceiver : BroadcastReceiver() {
 
     @SuppressLint("MissingPermission")
     private fun setNotification(taskId: Long, title: String, desc: String) {
-        val intent = Intent(context, ToDoAlarmReceiver::class.java).apply {
+        val intent = Intent(appcontext, ToDoAlarmReceiver::class.java).apply {
             action = ToDoIntentActions.CANCEL_ALARM.action
             putExtra(TODO_ID_EXTRA, taskId)
             putExtra(TODO_TITLE_EXTRA, title)
             putExtra(TODO_DESC_EXTRA, desc)
         }
         val pendingIntent = PendingIntent.getBroadcast(
-            context,
+            appcontext,
             taskId.hashCode(),
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE

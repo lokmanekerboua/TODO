@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ToDo</string>
+
+    <string name="page1_title">نظم مهامك</string>
+    <string name="page1_description">قم بتخطيط وجدولة مهامك بسهولة باستخدام واجهتنا البسيطة. حافظ على تحقيق أهدافك اليومية من خلال التصنيف الذكي والمواعيد النهائية.</string>
+
+    <string name="page2_title">لا تفوت أي موعد نهائي</string>
+    <string name="page2_description">احصل على إشعارات في الوقت المناسب لتبقى على المسار الصحيح. سنذكرك بالمواعيد النهائية والمهام المهمة حتى لا تنسى ما هو مهم.</string>
+
+    <string name="page3_title">ركز على الأمور المهمة</string>
+    <string name="page3_description">قم بترتيب أولويات مهامك وركز على الأهم. حافظ على إنتاجيتك من خلال التركيز على العناصر ذات الأولوية العالية أولاً.</string>
+</resources>

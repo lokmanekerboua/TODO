@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="TopTasks">TOP</string>
+    <string name="NoTasks">No Tasks</string>
+    <string name="AllTasks">All Tasks</string>
+    <string name="AddTask_Fab">Add Task</string>
+
+
+    <string name="order_asc">Ascending</string>
+    <string name="order_desc">Descending</string>
+    <string name="order_priority">Priority</string>
+    <string name="order_title">Title</string>
+    <string name="order_date">Date</string>
+    <string name="time">Time</string>
+
+
+    <string name="deleteAll">Delete All</string>
+
+
+    <string name="deleteAllTitle">Delete All Tasks</string>
+    <string name="deleteAllDescription">Are you sure you want to delete all tasks?</string>
+
+    <string name="delete">Delete</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="confirm">Confirm</string>
+
+    <string name="search">Search…</string>
+
+    <string name="signOut">Sign Out</string>
+    <string name="signOut_desc">Are you sure you want to SignOut?</string>
+
+    <string name="save">Save</string>
+    <string name="update">Update</string>
+    <string name="description">Description</string>
+    <string name="taskColor">Color</string>
+</resources>

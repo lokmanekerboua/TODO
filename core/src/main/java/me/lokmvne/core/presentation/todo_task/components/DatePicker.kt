@@ -9,7 +9,9 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import me.lokmvne.core.R
 import java.time.LocalDate
 import java.time.ZoneOffset
 
@@ -31,7 +33,7 @@ fun ToDoDatePickerDialog(onDismiss: () -> Unit, onConfirm: (pickedDate: Long?) -
                     onDismiss()
                 }
             ) {
-                Text("Confirm")
+                Text(stringResource(R.string.confirm))
             }
         },
         dismissButton = {
@@ -41,7 +43,7 @@ fun ToDoDatePickerDialog(onDismiss: () -> Unit, onConfirm: (pickedDate: Long?) -
                     onDismiss()
                 }
             ) {
-                Text("Dismiss")
+                Text(stringResource(R.string.dismiss))
             }
         }
     ) {

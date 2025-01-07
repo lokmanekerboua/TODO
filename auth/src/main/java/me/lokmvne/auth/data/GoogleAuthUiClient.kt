@@ -12,14 +12,17 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.tasks.await
 import me.lokmvne.auth.BuildConfig
+import me.lokmvne.auth.R
 import me.lokmvne.common.data.ToDoUser
 import me.lokmvne.common.utils.Resource
 import javax.inject.Inject
 
 class GoogleAuthUiClient @Inject constructor(
-    private val credentialManager: CredentialManager
+    private val credentialManager: CredentialManager,
+    @ApplicationContext private val appContext: Context
 ) {
     private val firebaseAuth = Firebase.auth
 
@@ -31,11 +34,11 @@ class GoogleAuthUiClient @Inject constructor(
             )
             return Resource.Success(credential)
         } catch (e: GetCredentialCancellationException) {
-            return Resource.Error("You Cancelled the sign in process")
+            return Resource.Error(appContext.getString(R.string.error_cancel_SignIn))
         } catch (e: NoCredentialException) {
-            return Resource.Error("There is no Google Account on this device!")
+            return Resource.Error(appContext.getString(R.string.error_NoAccount))
         } catch (e: Exception) {
-            return Resource.Error("An error occurred while signing in")
+            return Resource.Error(appContext.getString(R.string.error_SignIn_Default))
         }
     }
 
@@ -62,19 +65,19 @@ class GoogleAuthUiClient @Inject constructor(
                             )
                             return Resource.Success(user)
                         } else {
-                            return Resource.Error("An error occurred while signing in")
+                            return Resource.Error(appContext.getString(R.string.error_SignIn_Default))
                         }
                     } catch (e: Exception) {
-                        return Resource.Error("An error occurred while signing in")
+                        return Resource.Error(appContext.getString(R.string.error_SignIn_Default))
                     }
 
                 } else {
-                    return Resource.Error("Credential type is miss matched")
+                    return Resource.Error(appContext.getString(R.string.error_credential_missMatched))
                 }
             }
 
             else -> {
-                return Resource.Error("Credential type isn't supported")
+                return Resource.Error(appContext.getString(R.string.error_credential_missMatched))
             }
         }
     }

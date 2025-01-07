@@ -7,6 +7,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import me.lokmvne.core.R
 
 @Composable
 fun SignOutDialog(
@@ -14,7 +16,7 @@ fun SignOutDialog(
     onDismiss: () -> Unit,
 ) {
     AlertDialog(
-        title = { Text("SignOut") },
+        title = { Text(stringResource(R.string.signOut)) },
         text = { Text("Are you sure you want to SignOut?") },
         onDismissRequest = { onDismiss() },
         confirmButton = {

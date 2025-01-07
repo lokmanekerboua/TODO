@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.lokmvne.common.data.data_store.ToDoPreferences
+import me.lokmvne.core.data.utils.Priority
 import me.lokmvne.core.domain.model.ToDoTask
 import me.lokmvne.core.domain.use_cases.ToDoUseCases
 import me.lokmvne.core.utils.AlarmController
@@ -126,6 +128,7 @@ class TodoListViewModel @Inject constructor(
                             todoTasks = tasks,
                             tasksOrder = it
                         )
+                        delay(100)
                         getState = getTaksState.FINISH
                     }
             }
@@ -145,7 +148,7 @@ class TodoListViewModel @Inject constructor(
     private fun deleteTask(toDoTask: ToDoTask) {
         viewModelScope.launch {
             useCases.deleteTaskUseCase(toDoTask)
-            alarmController.cancelAlarm(toDoTask)
+            alarmController.cancelAlarm(toDoTask.id)
             recentlyDeletedTask = toDoTask
             SnackBarController.sendEvent(
                 event = SnackBarEvent(
@@ -164,15 +167,16 @@ class TodoListViewModel @Inject constructor(
     private fun searchDatabase(searchQuery: String) {
         getTasksJob?.cancel()
         getTasksJob = viewModelScope.launch {
-            //delay(200)
             if (searchQuery.isEmpty()) {
                 getAllTasks()
+                getHighPriorityTasks()
                 return@launch
             }
             useCases.searchDatabaseUseCase(searchQuery)
                 .collect { tasks ->
                     tasksState = tasksState.copy(
                         todoTasks = tasks,
+                        highPriorityTasks = tasks.filter { it.priority == Priority.HIGH }
                     )
                 }
         }

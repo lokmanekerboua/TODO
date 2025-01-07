@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_cancel_SignIn">لقد ألغيت عملية تسجيل الدخول</string>
+    <string name="error_NoAccount">لا يوجد حساب Google على هذا الجهاز!</string>
+    <string name="error_SignIn_Default">حدث خطأ أثناء تسجيل الدخول</string>
+    <string name="error_credential_missMatched">نوع بيانات الاعتماد غير متطابق</string>
+    <string name="error_occurred">حدث خطأ</string>
+</resources>

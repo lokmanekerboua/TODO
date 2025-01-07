@@ -65,7 +65,7 @@ fun SwipeToDoItem(
         initialValue = SwipeToDismissBoxValue.Settled,
         confirmValueChange = {
             scope.launch {
-                delay(600)
+                delay(900)
                 if (it == SwipeToDismissBoxValue.EndToStart) {
                     onDelete()
                 }
@@ -77,7 +77,7 @@ fun SwipeToDoItem(
     AnimatedVisibility(
         visible = swipeState.currentValue != SwipeToDismissBoxValue.EndToStart,
         exit = shrinkVertically(
-            animationSpec = tween(durationMillis = 400),
+            animationSpec = tween(durationMillis = 500),
             shrinkTowards = Alignment.Top
         ) + fadeOut(),
         enter = expandHorizontally(
@@ -153,7 +153,7 @@ fun TodoItem(
                 contentDescription = null,
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
-                    .size(80.dp)
+                    .size(70.dp)
             )
             Column(
                 modifier = Modifier

@@ -1,13 +1,16 @@
 package me.lokmvne.auth.repository
 
 import android.content.Context
-import me.lokmvne.common.utils.Resource
+import dagger.hilt.android.qualifiers.ApplicationContext
+import me.lokmvne.auth.R
 import me.lokmvne.auth.data.GoogleAuthUiClient
 import me.lokmvne.common.data.ToDoUser
+import me.lokmvne.common.utils.Resource
 import javax.inject.Inject
 
 class GoogleAuthRepoImpl @Inject constructor(
-    private val googleAuthUiClient: me.lokmvne.auth.data.GoogleAuthUiClient
+    private val googleAuthUiClient: GoogleAuthUiClient,
+    @ApplicationContext private val appContext: Context
 ) : GoogleAuthRepo {
     override suspend fun signIn(context: Context): Resource<ToDoUser> {
         googleAuthUiClient.signIn(context).let {
@@ -21,11 +24,11 @@ class GoogleAuthRepoImpl @Inject constructor(
                                 }
 
                                 is Resource.Error -> {
-                                    return Resource.Error(res.message ?: "An error occurred")
+                                    return Resource.Error(res.message ?: appContext.getString(R.string.error_occurred))
                                 }
 
                                 else -> {
-                                    return Resource.Error(res.message ?: "An error occurred")
+                                    return Resource.Error(res.message ?: appContext.getString(R.string.error_occurred))
                                 }
                             }
                         }
@@ -33,11 +36,11 @@ class GoogleAuthRepoImpl @Inject constructor(
                 }
 
                 is Resource.Error -> {
-                    return Resource.Error(it.message ?: "An error occurred")
+                    return Resource.Error(it.message ?: appContext.getString(R.string.error_occurred))
                 }
 
                 else -> {
-                    return Resource.Error(it.message ?: "An error occurred")
+                    return Resource.Error(it.message ?: appContext.getString(R.string.error_occurred))
                 }
             }
         }

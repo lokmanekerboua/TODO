@@ -8,8 +8,10 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import me.lokmvne.compose.components.ToDoTextField
+import me.lokmvne.core.R
 
 @Composable
 fun ToDoSearchBox(
@@ -19,7 +21,7 @@ fun ToDoSearchBox(
 ) {
     ToDoTextField(
         txt = searchQuery,
-        placeholder = "Search...",
+        placeholder = stringResource(R.string.search),
         modifier = Modifier
             .fillMaxWidth()
             .padding(10.dp),

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="error_cancel_SignIn">Vous avez annulé le processus de connexion</string>
+    <string name="error_NoAccount">Il n\'y a pas de compte Google sur cet appareil !</string>
+    <string name="error_SignIn_Default">Une erreur s\'est produite lors de la connexion</string>
+    <string name="error_credential_missMatched">Le type d\'identifiant ne correspond pas</string>
+    <string name="error_occurred">Une erreur s\'est produite</string>
+</resources>
+

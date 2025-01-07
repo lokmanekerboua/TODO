@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">ToDo</string>
+
+    <string name="page1_title">Organize Your Tasks</string>
+    <string name="page1_description">Easily plan and schedule your tasks with our intuitive interface. Stay on top of your daily goals with smart categorization and deadlines.</string>
+
+    <string name="page2_title">Never Miss a Deadline</string>
+    <string name="page2_description">Get timely notifications to keep you on track. We\'ll remind you about due dates and important tasks, so you never forget what\'s important.</string>
+
+    <string name="page3_title">Focus on What Matters</string>
+    <string name="page3_description">Prioritize your tasks and highlight the ones that matter most. Stay productive by focusing on high-priority items first.</string>
 </resources>

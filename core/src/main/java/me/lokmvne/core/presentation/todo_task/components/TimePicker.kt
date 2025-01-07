@@ -10,7 +10,9 @@ import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import me.lokmvne.core.R
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,7 +35,7 @@ fun ToDoTimePickerDialog(onDismiss: () -> Unit, onConfirm: (pickedDate: TimePick
                     onDismiss()
                 }
             ) {
-                Text("Confirm")
+                Text(stringResource(R.string.confirm))
             }
 
         },
@@ -44,7 +46,7 @@ fun ToDoTimePickerDialog(onDismiss: () -> Unit, onConfirm: (pickedDate: TimePick
                     onDismiss()
                 }
             ) {
-                Text("Dismiss")
+                Text(stringResource(R.string.dismiss))
             }
         },
         text = {

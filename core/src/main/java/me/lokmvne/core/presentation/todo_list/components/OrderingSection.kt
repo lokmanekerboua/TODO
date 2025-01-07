@@ -11,11 +11,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import me.lokmvne.compose.ui.theme.ToDoAppTheme
 import me.lokmvne.common.utils.OrderType
 import me.lokmvne.common.utils.ToDoOrder
+import me.lokmvne.core.R
 
 @Composable
 fun OrderingSection(
@@ -34,7 +36,7 @@ fun OrderingSection(
             horizontalArrangement = Arrangement.SpaceAround
         ) {
             ToDoRadioButton(
-                text = "Ascending",
+                text = stringResource(R.string.order_asc),
                 isSelect = taskOrder.orderType is OrderType.Ascending,
                 onClick = {
                     onTaskOrderChange(taskOrder.copy(orderType = OrderType.Ascending))
@@ -42,7 +44,7 @@ fun OrderingSection(
             )
 
             ToDoRadioButton(
-                text = "Descending",
+                text = stringResource(R.string.order_desc),
                 isSelect = taskOrder.orderType is OrderType.Descending,
                 onClick = {
                     onTaskOrderChange(taskOrder.copy(orderType = OrderType.Descending))
@@ -55,7 +57,7 @@ fun OrderingSection(
             horizontalArrangement = Arrangement.SpaceAround
         ) {
             ToDoRadioButton(
-                text = "Title",
+                text = stringResource(R.string.order_title),
                 isSelect = taskOrder is ToDoOrder.Title,
                 onClick = {
                     onTaskOrderChange(ToDoOrder.Title(taskOrder.orderType))
@@ -63,7 +65,7 @@ fun OrderingSection(
             )
 
             ToDoRadioButton(
-                text = "Priority",
+                text = stringResource(R.string.order_priority),
                 isSelect = taskOrder is ToDoOrder.Priority,
                 onClick = {
                     onTaskOrderChange(ToDoOrder.Priority(taskOrder.orderType))
@@ -71,7 +73,7 @@ fun OrderingSection(
             )
 
             ToDoRadioButton(
-                text = "Date",
+                text = stringResource(R.string.order_date),
                 isSelect = taskOrder is ToDoOrder.TriggerTime,
                 onClick = {
                     onTaskOrderChange(ToDoOrder.TriggerTime(taskOrder.orderType))

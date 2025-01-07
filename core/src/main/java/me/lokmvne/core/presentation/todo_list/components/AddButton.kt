@@ -7,7 +7,9 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import me.lokmvne.core.R
 
 @Composable
 fun AddButton(navigateToTaskScreen: (Long) -> Unit) {
@@ -19,7 +21,7 @@ fun AddButton(navigateToTaskScreen: (Long) -> Unit) {
     ) {
         Icon(
             imageVector = Icons.Default.Add,
-            contentDescription = "Add Task"
+            contentDescription = stringResource(R.string.AddTask_Fab)
         )
     }
 }

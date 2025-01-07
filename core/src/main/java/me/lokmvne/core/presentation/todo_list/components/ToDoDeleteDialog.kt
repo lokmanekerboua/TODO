@@ -7,6 +7,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import me.lokmvne.core.R
 
 @Composable
 fun DeleteDialog(
@@ -14,8 +16,8 @@ fun DeleteDialog(
     onDismiss: () -> Unit,
 ) {
     AlertDialog(
-        title = { Text("Delete All Tasks") },
-        text = { Text("Are you sure you want to delete all tasks?") },
+        title = { Text(stringResource(R.string.order_title)) },
+        text = { Text(stringResource(R.string.deleteAllDescription)) },
         onDismissRequest = { onDismiss() },
         confirmButton = {
             Button(
@@ -28,7 +30,7 @@ fun DeleteDialog(
                     contentColor = Color.White
                 )
             ) {
-                Text(text = "Delete")
+                Text(text = stringResource(R.string.delete))
             }
         },
         dismissButton = {
@@ -41,7 +43,7 @@ fun DeleteDialog(
                     contentColor = MaterialTheme.colorScheme.onTertiary
                 )
             ) {
-                Text("Dismiss")
+                Text(stringResource(R.string.dismiss))
             }
         }
     )

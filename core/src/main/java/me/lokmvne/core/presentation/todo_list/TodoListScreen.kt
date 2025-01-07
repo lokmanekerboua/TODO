@@ -1,5 +1,6 @@
 package me.lokmvne.core.presentation.todo_list
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -28,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -132,12 +134,12 @@ fun TodoListScreen(
 
 //-----------------------------Tasks List----------------------------------------------
                 if (viewModel.getState == getTaksState.IDLE || viewModel.getState == getTaksState.LOADING) {
-                    Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
-                    }
+//                    Box(
+//                        modifier = Modifier.fillMaxSize(),
+//                        contentAlignment = Alignment.Center
+//                    ) {
+//                        CircularProgressIndicator()
+//                    }
                 } else {
                     Column {
                         Row(
@@ -145,7 +147,11 @@ fun TodoListScreen(
                                 .fillMaxWidth()
                                 .padding(vertical = 5.dp, horizontal = 10.dp)
                         ) {
-                            Text(text = "TOP", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                            Text(
+                                text = stringResource(R.string.TopTasks),
+                                fontWeight = FontWeight.Bold,
+                                fontSize = 18.sp
+                            )
                         }
                         if (viewModel.tasksState.highPriorityTasks.isEmpty()) {
                             Column(
@@ -162,7 +168,10 @@ fun TodoListScreen(
                                         .size(100.dp)
                                         .padding(5.dp)
                                 )
-                                Text("No Tasks", color = MaterialTheme.colorScheme.onBackground)
+                                Text(
+                                    stringResource(R.string.NoTasks),
+                                    color = MaterialTheme.colorScheme.onBackground
+                                )
                             }
                         } else {
                             LazyRow {
@@ -190,7 +199,11 @@ fun TodoListScreen(
                             .fillMaxWidth()
                             .padding(vertical = 10.dp, horizontal = 10.dp)
                     ) {
-                        Text(text = "All Tasks", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                        Text(
+                            text = stringResource(R.string.AllTasks),
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp
+                        )
                     }
 
                     if (viewModel.tasksState.todoTasks.isEmpty()) {
@@ -207,7 +220,10 @@ fun TodoListScreen(
                                     .size(100.dp)
                                     .padding(5.dp)
                             )
-                            Text("No Tasks", color = MaterialTheme.colorScheme.onBackground)
+                            Text(
+                                stringResource(R.string.NoTasks),
+                                color = MaterialTheme.colorScheme.onBackground
+                            )
                         }
                     } else {
                         LazyColumn {

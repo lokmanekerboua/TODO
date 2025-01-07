@@ -18,9 +18,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
+import me.lokmvne.core.R
 import me.lokmvne.core.presentation.todo_profile.composable.SignOutDialog
 
 @Composable
@@ -72,7 +74,7 @@ fun ProfileScreen(
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = "Sign Out",
+                    text = stringResource(R.string.signOut),
                     color = Color.Red,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = Modifier.clickable {
